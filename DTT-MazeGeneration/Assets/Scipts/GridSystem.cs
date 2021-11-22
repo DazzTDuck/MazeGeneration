@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Grid
+public class GridSystem
 {
     private int width;
     private int height;
@@ -10,7 +10,7 @@ public class Grid
 
     private Cell[,] gridArray;
 
-    public Grid(int width, int height, Vector2 cellSize, Vector2 offset)
+    public GridSystem(int width, int height, Vector2 cellSize, Vector2 offset)
     {
         this.width = width;
         this.height = height;
