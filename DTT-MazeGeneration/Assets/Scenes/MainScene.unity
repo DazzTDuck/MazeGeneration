@@ -220,7 +220,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid_Width: 25
   grid_Height: 25
-  grid_CellSize: {x: 1, y: 1}
 --- !u!4 &397189448
 Transform:
   m_ObjectHideFlags: 0

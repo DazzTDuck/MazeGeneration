@@ -14,7 +14,7 @@ public class MazeHandler : MonoBehaviour
     private Vector2 grid_CellSize = new Vector2(1, 1);
     private Vector2 grid_Offset;
 
-    private Grid<Cell> mazeGrid;
+    private Grid mazeGrid;
     private MazeGeneration mazeGeneration;
 
 
@@ -27,9 +27,9 @@ public class MazeHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && !mazeGeneration.generatingMaze)
         {
+            mazeGeneration.generatingMaze = true;
             UpdateGrid();
             mazeGeneration.GenerateMaze();
-            mazeGeneration.generatingMaze = true;
         }
     }
 
@@ -44,7 +44,7 @@ public class MazeHandler : MonoBehaviour
         float y = (float)height / grid_Height;
 
         grid_CellSize = new Vector2(x, y);
-        mazeGrid = new Grid<Cell>(width, height, grid_CellSize, grid_Offset, new Cell());
+        mazeGrid = new Grid(grid_Width, grid_Height, grid_CellSize, grid_Offset);
         mazeGeneration.grid = mazeGrid;
     }
 
@@ -62,14 +62,10 @@ public class MazeHandler : MonoBehaviour
 
                 Gizmos.color = currentCell.isWall ? Color.black : currentCell.isVisited ? Color.yellow : Color.white;
 
-               // Gizmos.color = currentCell.isWall ? Color.black 
-                    //: currentCell.startCell ? Color.green : currentCell.endCell ? Color.red : Color.white;
-
-                Gizmos.color = currentCell.startCell ? Color.green : Color.white; 
+                Gizmos.color = currentCell.isWall ? Color.black  
+                    : currentCell.startCell ? Color.green : currentCell.endCell ? Color.red : Color.white;
 
                 Gizmos.DrawCube(mazeGrid.GetWorldPosition(x, y), new Vector3(grid_CellSize.x, 0, grid_CellSize.y));
-
-                currentCell.isWall = !currentCell.isWall;
             }    
         }
     }
