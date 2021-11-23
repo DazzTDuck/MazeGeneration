@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class MazeHandler : MonoBehaviour
 {
-    [Header("Maze Settings")] 
+    [Header("Maze Settings")]
+    [SerializeField] private float generatingLatency = 1;
     [SerializeField] private int grid_Width;
     [SerializeField] private int grid_Height;
 
@@ -17,6 +18,7 @@ public class MazeHandler : MonoBehaviour
     private GridSystem _mazeGridSystem;
     private MazeGeneration mazeGeneration;
 
+    private float mazeTimer = 0;
 
     private void Start()
     {
@@ -27,9 +29,21 @@ public class MazeHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && !mazeGeneration.generatingMaze)
         {
-            mazeGeneration.generatingMaze = true;
+            //mazeGeneration.generatingMaze = true;
             UpdateGrid();
             mazeGeneration.SetupGeneration();
+        }
+        
+        //to show the generation better
+        if(mazeGeneration.generatingMaze)
+        {
+            if(mazeTimer <= 0)
+            {
+                mazeTimer = generatingLatency;
+                mazeGeneration.GenerateMaze();
+            }
+            else
+                mazeTimer -= Time.deltaTime;
         }
     }
 
@@ -59,11 +73,17 @@ public class MazeHandler : MonoBehaviour
             for (int y = 0; y < grid_Height; y++)
             {
                 Cell currentCell = _mazeGridSystem.GetGridObjectValue(x, y);
-
-                Gizmos.color = currentCell.isWall ? Color.black : currentCell.isVisited ? Color.yellow : Color.white;
-
-                Gizmos.color = currentCell.isWall ? Color.black  
-                    : currentCell.startCell ? Color.green : currentCell.endCell ? Color.red : Color.white;
+                
+                if(currentCell.isVisited)
+                    Gizmos.color = Color.white;
+                if(currentCell.isWall) 
+                    Gizmos.color = Color.black;
+                if(currentCell.isCurrentCell)
+                    Gizmos.color = Color.blue;
+                if(currentCell.startCell)
+                    Gizmos.color = Color.green;
+                if(currentCell.endCell)
+                    Gizmos.color = Color.red;
 
                 Gizmos.DrawCube(_mazeGridSystem.GetWorldPosition(x, y), new Vector3(grid_CellSize.x, 0, grid_CellSize.y));
             }    

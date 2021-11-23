@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -14,7 +15,7 @@ public class MazeGeneration
     public List<Cell> Cells { get; set;}
     public List<Cell> Walls { get; set;}
     
-    private List<Cell> stack = new List<Cell>();    
+    private Stack<Cell> stack = new Stack<Cell>();    
     private Cell currentCell; 
 
     public MazeGeneration(GridSystem gridSystem, bool generatingMaze)
@@ -63,42 +64,123 @@ public class MazeGeneration
             }
             Walls[i].isWall = true;
         }
-
-        generatingMaze = false;
-    }
-    
-    public void GenerateMaze(int latency)
-    {
-        do
-        {
-           //check if done 
-           generatingMaze = !IsCompleted();    
-        }
-        while (generatingMaze);
         
+        generatingMaze = true;
     }
     
+    public void GenerateMaze()
+    {
+        Debug.Log("generating");
+
+        //to show current cell
+        foreach (Cell cell in stack)
+        {
+            cell.isCurrentCell = cell == stack.First();
+        }
+        currentCell.isVisited = true;
+
+        Cell nextCell = GetRandomNeighbor(currentCell);
+        if(nextCell != null)
+            RemoveWalls(currentCell, nextCell);
+        
+        // Remove wall if it is current cell
+        foreach (Cell wall in Walls)
+        {
+            if (wall.x == currentCell.x && wall.y == currentCell.y)
+            {
+                wall.isWall = false;
+                int index = Walls.IndexOf(wall);
+                Walls.RemoveAt(index);
+                break;
+            }
+        }
+        
+        if(nextCell != null)
+        {
+            stack.Push(currentCell);
+            currentCell = nextCell;
+        }
+        else if(stack.Count > 0)
+            currentCell = stack.Pop();
+        
+        //check if done 
+        generatingMaze = !IsCompleted();
+    }
+    
+    private void RemoveWalls(Cell a, Cell b)
+    {
+        //assigning coordinates of wall between a and b
+        // if not equal, check if it is higher, if true decrease one, else one higher, else just same coordinate.
+        
+        int x = (a.x != b.x) ? (a.x > b.x ? a.x - 1 : a.x + 1) : a.x;   
+        int y = (a.y != b.y) ? (a.y > b.y ? a.y - 1 : a.y + 1) : a.y;
+
+        foreach (Cell wall in Walls)
+        {
+            if(wall.x == x && wall.y == y)
+            {
+                wall.isWall = false;
+                int index = Walls.IndexOf(wall);
+                Walls.RemoveAt(index);
+                break;
+            }        
+        }
+        switch (a.x - b.x)
+        {
+            //Disabling corresponding wall for each cell
+            case 1:
+            {
+                //remove a Top and b Bottom wall
+                RemoveWall(a.x - 2, a.y);
+                RemoveWall(b.x + 2, b.y);
+                break;
+            }
+            case -1:
+                //remove a Bottom and b Top wall
+                RemoveWall(a.x + 2, a.y);
+                RemoveWall(b.x - 2, b.y);
+                break;
+        }
+        switch (a.y - b.y)
+        {
+            case 1:
+                //remove a Left and b Right wall
+                RemoveWall(a.x, a.y - 2);
+                RemoveWall(b.x, b.y + 2);
+                break;
+            case -1:
+                //remove a Right and b Left wall
+                RemoveWall(a.x, a.y + 2);
+                RemoveWall(b.x, b.y - 2);
+                break;
+        }
+    }
     private Cell GetRandomNeighbor(Cell cell)
     {
         List<Cell> neighbors = new List<Cell>();
         
-        for (int x = -1; x <= 1; x++)
-        {
-            for (int y = -1; y <= 1; y++)
-            {
-                if (x == 0 && y == 0)
-                {
-                    continue;
-                }
-                int checkX = cell.x + x;
-                int checkY = cell.y + y;
+         // Assigning available neighbor cells
+            Cell top = (cell.x - 2 > 0) ? Cells.Find(c => c.x == cell.x - 2 && c.y == cell.y) : null;
+            Cell right = (cell.y + 1 < gridSystem.GetWidth() - 1) ? Cells.Find(c => c.y == cell.y + 2 && c.x == cell.x) : null;
+            Cell bottom = (cell.x + 1 < gridSystem.GetHeight() - 1) ? Cells.Find(c => c.x== cell.x + 2 && c.y == cell.y) : null;
+            Cell left = (cell.y - 2 > 0) ? Cells.Find(c => c.y == cell.y - 2 && c.x == cell.y) : null;
 
-                if (checkX >= 0 && checkX < gridSystem.GetWidth() && checkY >= 0 && checkY < gridSystem.GetHeight())
-                {
-                    neighbors.Add(gridSystem.GetGridObjectValue(checkX, checkY));
-                }
+            if (top is { isVisited: false })
+            {
+                neighbors.Add(top);
             }
-        }
+            if (right is { isVisited: false })
+            {
+                neighbors.Add(right);
+            }
+            if (bottom is { isVisited: false })
+            {
+                neighbors.Add(bottom);
+            }
+            if (left is { isVisited: false })
+            {
+                neighbors.Add(left);
+            }
         
         if (neighbors.Count > 0)
         {
@@ -159,6 +241,20 @@ public class MazeGeneration
 
         return hit ? trueValue : falseValue;
     }
+    
+    private void RemoveWall(int x, int y)
+    {
+        if(x < 0)
+            x = 0;
+        if(y < 0)
+            y = 0;
+        
+        Debug.Log(x +", " + y);
+        
+        Cell wall = gridSystem.GetGridObjectValue(x, y);
+        wall.isWall = false;
+    }
+    
     
     public bool IsCompleted()
     {
