@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Cell
 {
-    public bool[] wallsActive;
     public int[] wallsIndex;
     
     public bool isVisited;
@@ -23,9 +22,10 @@ public class Cell
         ResetCell();
     }
 
-    public void SetWallIndex(int up, int left, int bottom, int right)
+    public void SetWallIndex(int up, int left, int down, int right)
     {
-        wallsIndex = new []{up, left, bottom, right};
+        wallsIndex = new []{up, left, down, right};
+        //Debug.Log($"{x}, {y} = {up}, {left}, {down}, {right}");
     }
 
     public void ResetCell()
@@ -34,6 +34,5 @@ public class Cell
         endCell = false;
         startCell = false;
         isCurrentCell = false;
-        wallsActive = new []{true, true, true, true};
     }
 }

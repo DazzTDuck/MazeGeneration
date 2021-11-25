@@ -5,7 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
-using Random = System.Random;
+using Random = UnityEngine.Random;
 
 public class MazeGeneration
 {
@@ -29,10 +29,15 @@ public class MazeGeneration
         Debug.Log("Setup");
         this.walls = walls;
 
+        //resetting all cells so it can generate a new maze
         ResetMaze();
+
+        //making sure every cell is referenced in the list
         SetAllCellsInList();
+
         //set walls in every cell
         SetWallIndexesToCells();
+
         //start generation
         GenerateMaze();
     }
@@ -113,8 +118,8 @@ public class MazeGeneration
     {
         Debug.Log("generating");
         
-        Cell cellA = gridSystem.GetGridObjectValue(5, 5);
-        Cell cellB = gridSystem.GetGridObjectValue(4, 5);
+        Cell cellA = gridSystem.GetGridObjectValue(8, 5);
+        Cell cellB = gridSystem.GetGridObjectValue(9, 5);
 
         BreakWallBetweenCells(cellA, cellB);
     }
@@ -122,25 +127,38 @@ public class MazeGeneration
     public void BreakWallBetweenCells(Cell a, Cell b)
     {
         //break wall between 2 cells given
-
-        for (int i = 0; i < a.wallsIndex.Length; i++)
+        foreach (var wallA in a.wallsIndex)
         {
-            for (int j = 0; j < b.wallsIndex.Length; j++)
+            foreach (var wallB in b.wallsIndex)
             {
-                if(a.wallsIndex.Contains(b.wallsIndex[j]) && b.wallsIndex.Contains(a.wallsIndex[i]))
+                if(wallA == wallB)
                 {
-                    walls[i].SetActive(false);
-                }    
-            }    
+                    Debug.Log($"Removed Wall: {wallA}");
+                    walls[wallA].SetActive(false);
+                    //just disabling wallA because they're the same wall
+                    return;
+                }
+                Debug.LogWarning($"cell {a.x},{a.y} and cell {b.x},{b.y} do not have a shared wall");
+            }
         }
     }
     
     public Cell GetRandomNeighbor(Cell cell)
     {
         List<Cell> neighbors = new List<Cell>();
-        
-        //get neighbor that is up, down, left and right of the given cell
-        
+
+        //manipulate the x and y coords to get all cells next to that cell
+        Cell upCell;
+        Cell downCell;
+        Cell leftCell;
+        Cell rightCell;
+
+        if (neighbors.Count > 0)
+        {
+            int randomIndex = Random.Range(0, neighbors.Count);
+            return neighbors[randomIndex];
+        }
+
         return null;
     } 
 
@@ -154,6 +172,7 @@ public class MazeGeneration
                 cell.ResetCell();
             }
         }
+        cells.Clear();
     }
     
 }
