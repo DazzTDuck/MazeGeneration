@@ -8,8 +8,6 @@ public class Cell
     
     public bool isVisited;
     public bool isCurrentCell;
-    public bool startCell;
-    public bool endCell;
 
     public int x;
     public int y;
@@ -31,8 +29,6 @@ public class Cell
     public void ResetCell()
     {
         isVisited = false;
-        endCell = false;
-        startCell = false;
         isCurrentCell = false;
     }
 }

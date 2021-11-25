@@ -38,6 +38,10 @@ public class MazeGeneration
         //set walls in every cell
         SetWallIndexesToCells();
 
+        //Begin generation on (1,1)
+        currentCell = cells.First();
+        generatingMaze = true;
+        
         //start generation
         GenerateMaze();
     }
@@ -71,10 +75,12 @@ public class MazeGeneration
                 int currentCellIndex = cells.IndexOf(cell);
 
                 //calculate up index
-                if(x == 0)
+                // if(x == 0)
+                //     upWallIndex = currentCellIndex * 2 + x;
+                if(y == 0)
                     upWallIndex = currentCellIndex * 2 + x;
                 else if(x == gridSystem.GetWidth() - 1)
-                    upWallIndex = currentCellIndex * 2 + x + y + 1;     
+                    upWallIndex = currentCellIndex * 2 + x + y + 1;
                 else
                     upWallIndex = currentCellIndex * 2 + x + 1;
 
@@ -84,9 +90,9 @@ public class MazeGeneration
                 //calculate down index
                 if(y == 1 && x == gridSystem.GetWidth() - 1)
                     downWallIndex = upWallIndex - 4;
-                else if(y == 1 && x == gridSystem.GetWidth() - 1)
+                else if(x == gridSystem.GetWidth() - 1 || y == 1)
                     downWallIndex = upWallIndex - 3;
-                else if(x == 0)
+                else if(y == 0)
                     downWallIndex = upWallIndex + 2; 
                 else
                     downWallIndex = upWallIndex - 2;
@@ -94,6 +100,8 @@ public class MazeGeneration
                 //calculate right index
                 if(x == gridSystem.GetWidth() - 1)
                     rightWallIndex = upWallIndex + 2;
+                else if(x == 8)
+                    rightWallIndex = upWallIndex + (gridSystem.GetWidth() * 2) + 2 + y; 
                 else
                     rightWallIndex = upWallIndex + (gridSystem.GetWidth() * 2) + 2;
 
@@ -118,29 +126,103 @@ public class MazeGeneration
     {
         Debug.Log("generating");
         
-        Cell cellA = gridSystem.GetGridObjectValue(8, 5);
-        Cell cellB = gridSystem.GetGridObjectValue(9, 5);
+        foreach (Cell cell in stack)
+        {
+            cell.isCurrentCell = cell == stack.First();
+        }
+        currentCell.isVisited = true;
 
-        BreakWallBetweenCells(cellA, cellB);
+        Cell nextCell = GetRandomNeighbor(currentCell);
+        if(nextCell != null)
+            RemoveWallBetweenCells(currentCell, nextCell);
+
+        if(nextCell != null)
+        {
+            stack.Push(currentCell);
+            currentCell = nextCell;
+        }
+        else if(stack.Count > 0)
+            currentCell = stack.Pop();
+        
+        //check if done 
+        generatingMaze = !IsCompleted();
+        
+        if(IsCompleted())
+        {
+            //make opening for start and end point
+            MakeStartAndEndPoint();
+            Debug.Log("Done"); 
+        }
     }
 
-    public void BreakWallBetweenCells(Cell a, Cell b)
+    public void RemoveWallBetweenCells(Cell a, Cell b)
     {
+        //debug wallIndexes if not correct
+        // foreach (int wallA in a.wallsIndex)
+        // {
+        //     Debug.Log($"{a.x},{a.y} = {wallA}");    
+        // }
+        // foreach (int wallB in b.wallsIndex)
+        // {
+        //     Debug.Log($"{b.x},{b.y} = {wallB}");
+        // }
+        
         //break wall between 2 cells given
-        foreach (var wallA in a.wallsIndex)
+        foreach (int wallA in a.wallsIndex)
         {
-            foreach (var wallB in b.wallsIndex)
+            foreach (int wallB in b.wallsIndex)
             {
                 if(wallA == wallB)
                 {
-                    Debug.Log($"Removed Wall: {wallA}");
+                    //Debug.Log($"Removed Wall: {wallA}");
                     walls[wallA].SetActive(false);
                     //just disabling wallA because they're the same wall
                     return;
                 }
-                Debug.LogWarning($"cell {a.x},{a.y} and cell {b.x},{b.y} do not have a shared wall");
             }
         }
+        Debug.LogWarning($"cell {a.x},{a.y} and cell {b.x},{b.y} does not have a shared wall");
+    }
+    
+    public void MakeStartAndEndPoint()
+    {
+        Cell endCell;
+        
+        int x = 0;
+        int y = 0;
+        
+        if(Random.value > 0.5f) //50% chance  
+            x = Random.Range(1, gridSystem.GetWidth() - 1); //bottom row
+        else  
+            y = Random.Range(1, gridSystem.GetHeight() - 1); //left row
+       
+        Cell startCell = gridSystem.GetGridObjectValue(x, y);
+        
+        //open cell based of value
+        if(x >= 1 && y == 0)
+        {
+            //on bottom row remove bottom wall
+            walls[startCell.wallsIndex[2]].SetActive(false);
+            
+            //get random endCell on top row and remove up wall
+            endCell = gridSystem.GetGridObjectValue(Random.Range(1, gridSystem.GetWidth() - 1), gridSystem.GetHeight() - 1);
+            walls[endCell.wallsIndex[0]].SetActive(false);
+        }
+        else if(y >= 1 && x == 0)
+        {
+            //left row
+            walls[startCell.wallsIndex[1]].SetActive(false);
+            
+            //open end cell op right row
+            endCell = gridSystem.GetGridObjectValue(gridSystem.GetWidth() - 1, Random.Range(1, gridSystem.GetHeight() - 1));
+            walls[endCell.wallsIndex[3]].SetActive(false);
+        }
+        
+        //Wall indexes directions 
+        //0 = Up
+        //1 = Left
+        //2 = Down
+        //3 = Right
     }
     
     public Cell GetRandomNeighbor(Cell cell)
@@ -148,10 +230,20 @@ public class MazeGeneration
         List<Cell> neighbors = new List<Cell>();
 
         //manipulate the x and y coords to get all cells next to that cell
-        Cell upCell;
-        Cell downCell;
-        Cell leftCell;
-        Cell rightCell;
+        Cell upCell = gridSystem.GetGridObjectValue(cell.x, cell.y + 1);
+        Cell leftCell = gridSystem.GetGridObjectValue(cell.x - 1, cell.y);
+        Cell downCell = gridSystem.GetGridObjectValue(cell.x, cell.y - 1);
+        Cell rightCell = gridSystem.GetGridObjectValue(cell.x + 1, cell.y);
+        
+        //adding found neighbors to list to randomize
+        if(upCell is { isVisited: false })
+            neighbors.Add(upCell);
+        if(leftCell is { isVisited: false })
+            neighbors.Add(leftCell);    
+        if(downCell is { isVisited: false })
+            neighbors.Add(downCell);  
+        if(rightCell is { isVisited: false })
+            neighbors.Add(rightCell);
 
         if (neighbors.Count > 0)
         {
@@ -168,11 +260,20 @@ public class MazeGeneration
         {
             for (int y = 0; y < gridSystem.GetHeight(); y++)
             {
-                var cell = gridSystem.GetGridObjectValue(x, y);
+                Cell cell = gridSystem.GetGridObjectValue(x, y);
                 cell.ResetCell();
             }
         }
         cells.Clear();
     }
     
+     public bool IsCompleted()
+    {
+        return stack.Count == 0;
+    }
+     
+    public Vector3 GetPositionCurrentCell()
+    {
+        return gridSystem.GetWorldPosition(currentCell.x, currentCell.y); 
+    }
 }

@@ -10,10 +10,13 @@ public class MazeHandler : MonoBehaviour
     [SerializeField] private int grid_Width;
     [SerializeField] private int grid_Height;
     [Space]
+    [SerializeField] private bool showSearchingCube = false;
+    [Space]
     [SerializeField] private GameObject wallPrefab;
+    [SerializeField] private GameObject searchingCube;
 
-    private const int width = 25;
-    private const int height = 25;
+    private const int width = 28;
+    private const int height = 26;
     private Vector2 grid_CellSize = new Vector2(1, 1);
     private Vector2 grid_Offset;
 
@@ -34,24 +37,42 @@ public class MazeHandler : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !mazeGeneration.generatingMaze)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            //mazeGeneration.generatingMaze = true;
-            UpdateGrid();
-            mazeGeneration.SetupGeneration(walls);
+            GenerateNewMaze();    
         }
         
+        MazeGenerationDelay();
+        ShowSearchingCube();
+    }
+    
+    public void GenerateNewMaze()
+    {
+        if(!mazeGeneration.generatingMaze)
+        {
+            UpdateGrid();
+            mazeGeneration.SetupGeneration(walls);    
+        }
+    }
+    
+    private void MazeGenerationDelay()
+    {
         //delay the generation
         if(mazeGeneration.generatingMaze)
         {
-            if(mazeTimer <= 0)
+            if(generatingLatency > 0)
             {
-                mazeTimer = generatingLatency;
-                mazeGeneration.GenerateMaze();
+                if(mazeTimer <= 0)
+                {
+                    mazeTimer = generatingLatency;
+                    mazeGeneration.GenerateMaze();
+                }
+                else
+                    mazeTimer -= Time.deltaTime;    
             }
             else
-                mazeTimer -= Time.deltaTime;
-        }
+                mazeGeneration.GenerateMaze();   
+        }    
     }
 
     public void UpdateGrid()
@@ -142,25 +163,26 @@ public class MazeHandler : MonoBehaviour
     
     private void DestroyAllWalls()
     {
-           
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        //draw grid
-        if (mazeGridSystem == null)
-            return;
-        
-        for (int x = 0; x < mazeGridSystem.GetWidth(); x++)
+        foreach (GameObject wall in walls)
         {
-            for (int y = 0; y < mazeGridSystem.GetHeight(); y++)
+            Destroy(wall);    
+        }
+        walls.Clear();
+    }
+    
+    private void ShowSearchingCube()
+    {
+        if(showSearchingCube)
+        {
+            if(mazeGeneration.generatingMaze)
             {
-                Cell currentCell = mazeGridSystem.GetGridObjectValue(x, y);
-                
-                Gizmos.color = Color.white;
-                
-                Gizmos.DrawCube(mazeGridSystem.GetWorldPosition(x, y), new Vector3(grid_CellSize.x, 0, grid_CellSize.y));
+                searchingCube.transform.position = mazeGeneration.GetPositionCurrentCell();
+                searchingCube.transform.localScale =new Vector3(grid_CellSize.x / 2, searchingCube.transform.localScale.y, grid_CellSize.y / 2);
             }    
         }
+        
+        if(searchingCube.activeSelf != showSearchingCube)
+            searchingCube.SetActive(showSearchingCube && mazeGeneration.generatingMaze);
     }
+    
 }
