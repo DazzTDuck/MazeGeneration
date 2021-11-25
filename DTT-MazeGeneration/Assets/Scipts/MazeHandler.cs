@@ -3,14 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Direction
-    {
-        Up,
-        Right,
-        Down,
-        Left
-    }
-
 public class MazeHandler : MonoBehaviour
 {
     [Header("Maze Settings")]
@@ -46,7 +38,7 @@ public class MazeHandler : MonoBehaviour
         {
             //mazeGeneration.generatingMaze = true;
             UpdateGrid();
-            //mazeGeneration.SetupGeneration();
+            mazeGeneration.SetupGeneration(walls);
         }
         
         //delay the generation
@@ -140,6 +132,12 @@ public class MazeHandler : MonoBehaviour
             }    
         }
         wallsBuilt = true;
+
+        //setting names of walls to their index in the list to have a better reference
+        for (int i = 0; i < walls.Count; i++)
+        {
+            walls[i].name = i.ToString();    
+        }
     }
     
     private void DestroyAllWalls()

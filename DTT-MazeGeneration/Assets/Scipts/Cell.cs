@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Cell
 {
-    public bool[] walls;
+    public bool[] wallsActive;
+    public int[] wallsIndex;
     
     public bool isVisited;
     public bool isCurrentCell;
@@ -22,12 +23,17 @@ public class Cell
         ResetCell();
     }
 
+    public void SetWallIndex(int up, int left, int bottom, int right)
+    {
+        wallsIndex = new []{up, left, bottom, right};
+    }
+
     public void ResetCell()
     {
         isVisited = false;
         endCell = false;
         startCell = false;
         isCurrentCell = false;
-        walls = new []{true, true, true, true};
+        wallsActive = new []{true, true, true, true};
     }
 }
