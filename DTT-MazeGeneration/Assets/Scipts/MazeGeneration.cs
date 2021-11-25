@@ -85,7 +85,7 @@ public class MazeGeneration
                     upWallIndex = currentCellIndex * 2 + x + 1;
 
                 //calculate left index
-                var leftWallIndex = upWallIndex + 1;
+                int leftWallIndex = upWallIndex + 1;
                 
                 //calculate down index
                 if(y == 1 && x == gridSystem.GetWidth() - 1)
