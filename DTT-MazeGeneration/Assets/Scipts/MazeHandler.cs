@@ -180,7 +180,7 @@ public class MazeHandler : MonoBehaviour
             if(mazeGeneration.generatingMaze)
             {
                 searchingCube.transform.position = mazeGeneration.GetPositionCurrentCell();
-                searchingCube.transform.localScale =new Vector3(grid_CellSize.x / 2, searchingCube.transform.localScale.y, grid_CellSize.y / 2);
+                searchingCube.transform.localScale = new Vector3(grid_CellSize.x / 2, searchingCube.transform.localScale.y, grid_CellSize.y / 2);
             }    
         }
         
