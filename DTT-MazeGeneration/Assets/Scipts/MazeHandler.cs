@@ -15,13 +15,14 @@ public class MazeHandler : MonoBehaviour
     [SerializeField] private GameObject wallPrefab;
     [SerializeField] private GameObject searchingCube;
 
-    private const int width = 28;
-    private const int height = 26;
-    private Vector2 grid_CellSize = new Vector2(1, 1);
+    private const int width = 195;
+    private const int height = 180;
+    [HideInInspector]
+    public Vector2 grid_CellSize = new Vector2(1, 1);
     private Vector2 grid_Offset;
 
     private GridSystem mazeGridSystem;
-    private MazeGeneration mazeGeneration;
+    public MazeGeneration mazeGeneration;
 
     private float mazeTimer = 0;
     private bool wallsBuilt = false;
@@ -79,8 +80,10 @@ public class MazeHandler : MonoBehaviour
     {
         mazeGridSystem = null;
 
+        //grid_Offset.x = -width * 0.5f + 0.5f + transform.position.x;
+        //grid_Offset.y = -height * 0.5f + 0.5f;
         grid_Offset.x = -width * 0.5f + 0.5f + transform.position.x;
-        grid_Offset.y = -height * 0.5f + 0.5f;
+        grid_Offset.y = -height * 0.5f + 0.5f + transform.position.y;
 
         float x = (float)width / grid_Width;
         float y = (float)height / grid_Height;
@@ -128,7 +131,7 @@ public class MazeHandler : MonoBehaviour
                 //Left wall
                 GameObject leftWall = Instantiate(wallPrefab, transform);
                 leftWall.transform.position = worldPos + new Vector3(-grid_CellSize.x / 2,leftWall.transform.localScale.y / 2,0);
-                leftWall.transform.localScale = new Vector3(grid_CellSize.x, leftWall.transform.localScale.y, leftWall.transform.localScale.z);
+                leftWall.transform.localScale = new Vector3(grid_CellSize.y, leftWall.transform.localScale.y, leftWall.transform.localScale.z);
                 leftWall.transform.eulerAngles = new Vector3(0, 90, 0);
                 walls.Add(leftWall);
                 
@@ -146,7 +149,7 @@ public class MazeHandler : MonoBehaviour
                     //Right wall
                     GameObject rightWall = Instantiate(wallPrefab, transform);
                     rightWall.transform.position = worldPos + new Vector3(grid_CellSize.x / 2,rightWall.transform.localScale.y / 2,0);
-                    rightWall.transform.localScale = new Vector3(grid_CellSize.x, rightWall.transform.localScale.y, rightWall.transform.localScale.z);
+                    rightWall.transform.localScale = new Vector3(grid_CellSize.y, rightWall.transform.localScale.y, rightWall.transform.localScale.z);
                     rightWall.transform.eulerAngles = new Vector3(0, 90, 0);
                     walls.Add(rightWall);
                 }

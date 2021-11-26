@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44475326, g: 0.49429512, b: 0.57350737, a: 1}
+  m_IndirectSpecularColor: {r: 0.45126706, g: 0.5009569, b: 0.5733999, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -221,9 +221,10 @@ MonoBehaviour:
   generatingLatency: 0
   grid_Width: 25
   grid_Height: 25
-  showSearchingCube: 1
+  showSearchingCube: 0
   wallPrefab: {fileID: 5078439028444394562, guid: 55c4c4bf4fd26924bb71f752477f9544, type: 3}
   searchingCube: {fileID: 2108575715}
+  grid_CellSize: {x: 1, y: 1}
 --- !u!4 &397189448
 Transform:
   m_ObjectHideFlags: 0
@@ -232,7 +233,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 397189446}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9, y: 0, z: 0}
+  m_LocalPosition: {x: -10, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -324,13 +325,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.83031446, y: -0.28060594, z: 0.042287163, w: 0.47963527}
+  m_LocalRotation: {x: 0.6969272, y: -0.09361151, z: -0.548725, w: 0.45213965}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 124.892, y: 20.352997, z: 48.046997}
+  m_LocalEulerAnglesHint: {x: 148.164, y: 90.746, z: 47.531998}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,7 +342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
-  - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -349,14 +350,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &963194226
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
 --- !u!20 &963194227
 Camera:
   m_ObjectHideFlags: 0
@@ -380,8 +373,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.01
+  far clip plane: 400
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -408,12 +401,27 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: 0, y: 25, z: 0}
+  m_LocalPosition: {x: 48.7, y: 165, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c46e995a9b54c3e42ac1581f0247310f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mazeHandler: {fileID: 397189447}
+  target: {fileID: 2108575719}
+  followSpeed: 3
 --- !u!1 &1364773847
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,8 +511,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1364773847}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.2, y: -0.11, z: 0}
-  m_LocalScale: {x: 57.7605, y: 0.2, z: 35}
+  m_LocalPosition: {x: 8, y: -0.11, z: 0}
+  m_LocalScale: {x: 850, y: 0.2, z: 500}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5

@@ -92,18 +92,18 @@ public class MazeGeneration
                     downWallIndex = upWallIndex - 4;
                 else if(x == gridSystem.GetWidth() - 1 || y == 1)
                     downWallIndex = upWallIndex - 3;
-                else if(y == 0)
-                    downWallIndex = upWallIndex + 2; 
+                else if(y < 2)
+                    downWallIndex = upWallIndex + 2 + y;
                 else
                     downWallIndex = upWallIndex - 2;
 
                 //calculate right index
                 if(x == gridSystem.GetWidth() - 1)
                     rightWallIndex = upWallIndex + 2;
-                else if(x == 8)
-                    rightWallIndex = upWallIndex + (gridSystem.GetWidth() * 2) + 2 + y; 
+                else if (x == gridSystem.GetWidth() - 2)
+                    rightWallIndex = upWallIndex + (gridSystem.GetHeight() * 2) + 2 + y;
                 else
-                    rightWallIndex = upWallIndex + (gridSystem.GetWidth() * 2) + 2;
+                    rightWallIndex = upWallIndex + (gridSystem.GetHeight() * 2) + 2;
 
                 cell.SetWallIndex(upWallIndex,leftWallIndex,downWallIndex,rightWallIndex);
             }    
@@ -125,6 +125,13 @@ public class MazeGeneration
     public void GenerateMaze()
     {
         Debug.Log("generating");
+
+        //for debugging wall indexes to see why they're not correct
+        // Cell cellA = gridSystem.GetGridObjectValue(19, 7);
+        // Cell cellB = gridSystem.GetGridObjectValue(18, 7);
+        //
+        // RemoveWallBetweenCells(cellA, cellB);
+        // return;
         
         foreach (Cell cell in stack)
         {
@@ -158,15 +165,15 @@ public class MazeGeneration
     public void RemoveWallBetweenCells(Cell a, Cell b)
     {
         //debug wallIndexes if not correct
-        // foreach (int wallA in a.wallsIndex)
-        // {
-        //     Debug.Log($"{a.x},{a.y} = {wallA}");    
-        // }
-        // foreach (int wallB in b.wallsIndex)
-        // {
-        //     Debug.Log($"{b.x},{b.y} = {wallB}");
-        // }
-        
+        foreach (int wallA in a.wallsIndex)
+        {
+            Debug.Log($"{a.x},{a.y} = {wallA}");    
+        }
+        foreach (int wallB in b.wallsIndex)
+        {
+            Debug.Log($"{b.x},{b.y} = {wallB}");
+        }
+
         //break wall between 2 cells given
         foreach (int wallA in a.wallsIndex)
         {
