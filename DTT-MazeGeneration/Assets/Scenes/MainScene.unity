@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4359c6d99409de409db5260964dbaf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generatingLatency: 0
+  generatingLatency: 0.001
   grid_Width: 100
   grid_Height: 100
   showSearchingCube: 1

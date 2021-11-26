@@ -165,14 +165,14 @@ public class MazeGeneration
     public void RemoveWallBetweenCells(Cell a, Cell b)
     {
         //debug wallIndexes if not correct
-        foreach (int wallA in a.wallsIndex)
-        {
-            Debug.Log($"{a.x},{a.y} = {wallA}");    
-        }
-        foreach (int wallB in b.wallsIndex)
-        {
-            Debug.Log($"{b.x},{b.y} = {wallB}");
-        }
+        // foreach (int wallA in a.wallsIndex)
+        // {
+        //     Debug.Log($"{a.x},{a.y} = {wallA}");    
+        // }
+        // foreach (int wallB in b.wallsIndex)
+        // {
+        //     Debug.Log($"{b.x},{b.y} = {wallB}");
+        // }
 
         //break wall between 2 cells given
         foreach (int wallA in a.wallsIndex)

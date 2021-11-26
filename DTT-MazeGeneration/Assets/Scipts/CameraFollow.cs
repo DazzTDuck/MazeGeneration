@@ -20,13 +20,16 @@ public class CameraFollow : MonoBehaviour
 
     private void Update()
     {
-        if (mazeHandler.mazeGeneration.generatingMaze && target.gameObject.activeSelf)
+        if (mazeHandler.mazeGeneration.gridSystem.GetWidth() >= 75)
         {
-            float yOffset = mazeHandler.grid_CellSize.x > 75 ? 0.05f : 1;   
-            newPosistion = new Vector3(target.position.x, startPosistion.y * 0.35f, target.position.z);
-            transform.position = Vector3.Lerp(transform.position, newPosistion, followSpeed * Time.deltaTime); 
+            if (mazeHandler.mazeGeneration.generatingMaze && target.gameObject.activeSelf)
+            {
+                newPosistion = new Vector3(target.position.x, startPosistion.y * 0.35f, target.position.z);
+                transform.position = Vector3.Lerp(transform.position, newPosistion, followSpeed * Time.deltaTime); 
+            }
+            else
+                transform.position = startPosistion;
         }
-        else
-            transform.position = startPosistion;
+        
     }
 }

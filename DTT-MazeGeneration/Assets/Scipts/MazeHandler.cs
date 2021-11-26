@@ -80,14 +80,34 @@ public class MazeHandler : MonoBehaviour
     {
         mazeGridSystem = null;
 
-        //grid_Offset.x = -width * 0.5f + 0.5f + transform.position.x;
-        //grid_Offset.y = -height * 0.5f + 0.5f;
-        grid_Offset.x = -width * 0.5f + 0.5f + transform.position.x;
-        grid_Offset.y = -height * 0.5f + 0.5f + transform.position.y;
+        float x;
+        float y;
 
-        float x = (float)width / grid_Width;
-        float y = (float)height / grid_Height;
+        if (grid_Width == grid_Height)
+        {
+            x = (float)width / grid_Width;
+            y = (float)height / grid_Height;
+        }
+        else
+        {
+            if (grid_Width > grid_Height)
+            {
+                x = (float)width / grid_Width;
+                y = grid_Width / grid_Height * x;
+            }
+            else
+            {
+                y = (float)height / grid_Height;
+                x = grid_Height / grid_Width * y;
+            }
+        }
 
+        //centering grid
+        float newWidth = grid_Width < grid_Height ? (-width + x * grid_Width * 0.5f) : -width;
+        float newHeight = grid_Width > grid_Height ? (-height + y * grid_Height * 0.5f) : -height;
+        grid_Offset.x = newWidth * 0.5f + 0.5f + transform.position.x;
+        grid_Offset.y =  newHeight * 0.5f + 0.5f + transform.position.y;
+        
         grid_CellSize = new Vector2(x, y);
         mazeGridSystem = new GridSystem(grid_Width, grid_Height, grid_CellSize, grid_Offset);
         mazeGeneration.gridSystem = mazeGridSystem;
