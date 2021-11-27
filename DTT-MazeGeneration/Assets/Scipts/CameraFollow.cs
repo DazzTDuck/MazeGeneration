@@ -20,6 +20,9 @@ public class CameraFollow : MonoBehaviour
 
     private void Update()
     {
+        if(mazeHandler.mazeGeneration.gridSystem == null)
+            return;
+        
         if (mazeHandler.mazeGeneration.gridSystem.GetWidth() >= 75)
         {
             if (mazeHandler.mazeGeneration.generatingMaze && target.gameObject.activeSelf)

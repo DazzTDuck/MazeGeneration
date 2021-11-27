@@ -15,7 +15,7 @@ public class MazeHandler : MonoBehaviour
     [SerializeField] private GameObject wallPrefab;
     [SerializeField] private GameObject searchingCube;
 
-    private const int width = 195;
+    private const int width = 180;
     private const int height = 180;
     [HideInInspector]
     public Vector2 grid_CellSize = new Vector2(1, 1);
@@ -83,6 +83,7 @@ public class MazeHandler : MonoBehaviour
         float x;
         float y;
 
+        //scaling cells properly
         if (grid_Width == grid_Height)
         {
             x = (float)width / grid_Width;
@@ -93,21 +94,21 @@ public class MazeHandler : MonoBehaviour
             if (grid_Width > grid_Height)
             {
                 x = (float)width / grid_Width;
-                y = grid_Width / grid_Height * x;
+                y = grid_Width / grid_Height * x * (grid_Width / 2 - grid_Height <= 10 ? 0.5f : 1);
             }
             else
             {
                 y = (float)height / grid_Height;
-                x = grid_Height / grid_Width * y;
+                x = grid_Height / grid_Width * y * (grid_Height / 2 - grid_Width <= 10 ? 0.5f : 1);
             }
         }
 
         //centering grid
-        float newWidth = grid_Width < grid_Height ? (-width + x * grid_Width * 0.5f) : -width;
-        float newHeight = grid_Width > grid_Height ? (-height + y * grid_Height * 0.5f) : -height;
+        float newWidth = grid_Width < grid_Height ? (-width + x * grid_Width) : -width;
+        float newHeight = grid_Width < grid_Height ? (-height + y * grid_Height) : -height;
         grid_Offset.x = newWidth * 0.5f + 0.5f + transform.position.x;
-        grid_Offset.y =  newHeight * 0.5f + 0.5f + transform.position.y;
-        
+        grid_Offset.y = newHeight * 0.5f + 0.5f + transform.position.y;
+
         grid_CellSize = new Vector2(x, y);
         mazeGridSystem = new GridSystem(grid_Width, grid_Height, grid_CellSize, grid_Offset);
         mazeGeneration.gridSystem = mazeGridSystem;
