@@ -19,7 +19,7 @@ public class MazeHandler : MonoBehaviour
     private const int height = 180;
     [HideInInspector]
     public Vector2 grid_CellSize = new Vector2(1, 1);
-    private Vector2 grid_Offset;
+    [SerializeField] private Vector2 grid_Offset;
 
     private GridSystem mazeGridSystem;
     public MazeGeneration mazeGeneration;
@@ -94,20 +94,20 @@ public class MazeHandler : MonoBehaviour
             if (grid_Width > grid_Height)
             {
                 x = (float)width / grid_Width;
-                y = grid_Width / grid_Height * x * (grid_Width / 2 - grid_Height <= 10 ? 0.5f : 1);
+                bool check = grid_Width / 2 - grid_Height <= 10 && grid_Width / 2 - grid_Height > 0;
+                y = grid_Width / grid_Height * x * (check ? 0.5f : 1f);
             }
             else
             {
                 y = (float)height / grid_Height;
-                x = grid_Height / grid_Width * y * (grid_Height / 2 - grid_Width <= 10 ? 0.5f : 1);
+                bool check = grid_Height / 2 - grid_Width <= 10 && grid_Height / 2 - grid_Width > 0;
+                x = grid_Height / grid_Width * y * (check ? (float)(grid_Height - grid_Width) / 100 : 1f);
             }
         }
 
         //centering grid
-        float newWidth = grid_Width < grid_Height ? (-width + x * grid_Width) : -width;
-        float newHeight = grid_Width < grid_Height ? (-height + y * grid_Height) : -height;
-        grid_Offset.x = newWidth * 0.5f + 0.5f + transform.position.x;
-        grid_Offset.y = newHeight * 0.5f + 0.5f + transform.position.y;
+        grid_Offset.x = (-width + x) * 0.5f + 0.5f + transform.position.x;
+        grid_Offset.y = (-height + y) * 0.5f + 0.5f;
 
         grid_CellSize = new Vector2(x, y);
         mazeGridSystem = new GridSystem(grid_Width, grid_Height, grid_CellSize, grid_Offset);
@@ -205,8 +205,12 @@ public class MazeHandler : MonoBehaviour
             }    
         }
         
-        if(searchingCube.activeSelf != showSearchingCube)
-            searchingCube.SetActive(showSearchingCube && mazeGeneration.generatingMaze);
+        if(!mazeGeneration.generatingMaze)
+            searchingCube.SetActive(false); 
+        else
+        {
+            if(searchingCube.activeSelf != showSearchingCube)
+                searchingCube.SetActive(showSearchingCube);        
+        }
     }
-    
 }
