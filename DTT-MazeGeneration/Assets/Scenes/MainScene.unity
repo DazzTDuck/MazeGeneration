@@ -219,8 +219,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generatingLatency: 0
-  grid_Width: 62
-  grid_Height: 103
+  grid_Width: 25
+  grid_Height: 25
   showSearchingCube: 0
   wallPrefab: {fileID: 5078439028444394562, guid: 55c4c4bf4fd26924bb71f752477f9544, type: 3}
   searchingCube: {fileID: 2108575715}
