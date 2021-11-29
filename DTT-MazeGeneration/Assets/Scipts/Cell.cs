@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Cell
 {
-    public int[] wallsIndex;
+    public int[] wallsIndex = {0, 1, 2, 3};
     
     public bool isVisited;
     public bool isCurrentCell;

@@ -27,7 +27,7 @@ public class CameraFollow : MonoBehaviour
         {
             if (mazeHandler.mazeGeneration.generatingMaze && target.gameObject.activeSelf)
             {
-                newPosistion = new Vector3(target.position.x, startPosistion.y * 0.35f, target.position.z);
+                newPosistion = new Vector3(target.position.x + 15, startPosistion.y * 0.35f, target.position.z);
                 transform.position = Vector3.Lerp(transform.position, newPosistion, followSpeed * Time.deltaTime); 
             }
             else

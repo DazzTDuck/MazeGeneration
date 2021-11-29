@@ -17,7 +17,7 @@ public class MazeHandler : MonoBehaviour
 
     private const int width = 180;
     private const int height = 180;
-    [HideInInspector]
+    //[HideInInspector]
     public Vector2 grid_CellSize = new Vector2(1, 1);
     [SerializeField] private Vector2 grid_Offset;
 
@@ -80,34 +80,25 @@ public class MazeHandler : MonoBehaviour
     {
         mazeGridSystem = null;
 
-        float x;
-        float y;
+        float x = (float)width / grid_Width;
+        float y = (float)height / grid_Height;
 
         //scaling cells properly
-        if (grid_Width == grid_Height)
+        if (grid_Width > grid_Height)
         {
-            x = (float)width / grid_Width;
-            y = (float)height / grid_Height;
+            bool check = grid_Width / 2 - grid_Height <= 10;
+            y = (float)grid_Width / grid_Height * x * (check ? 0.5f : 1f);
         }
-        else
+        else if(grid_Width < grid_Height)
         {
-            if (grid_Width > grid_Height)
-            {
-                x = (float)width / grid_Width;
-                bool check = grid_Width / 2 - grid_Height <= 10 && grid_Width / 2 - grid_Height >= 0;
-                y = grid_Width / grid_Height * x * (check ? 0.5f : 1f);
-            }
-            else
-            {
-                y = (float)height / grid_Height;
-                bool check = grid_Height / 2 - grid_Width <= 10 && grid_Height / 2 - grid_Width > 0;
-                x = grid_Height / grid_Width * y * (check ? (float)(grid_Height - grid_Width) / 100 : 1f);
-            }
+            bool check = grid_Height / 2 - grid_Width <= 10;
+            x = (float)grid_Height / grid_Width * y * (check ? (float)grid_Width / grid_Height : 1f);
         }
 
         //centering grid
-        grid_Offset.x = (-width + x) * 0.5f + 0.5f + transform.position.x;
-        grid_Offset.y = (-height + y) * (0.5f - (float)Mathf.Abs(grid_Width - grid_Height) / 100);
+        float offsetValue = grid_Width - grid_Height > 0 ? (float)(grid_Width - grid_Height) / 100 : 0.5f;
+        grid_Offset.x = (-width + x) * 0.5f + 0.5f;
+        grid_Offset.y = (-height + y) * offsetValue;
 
         grid_CellSize = new Vector2(x, y);
         mazeGridSystem = new GridSystem(grid_Width, grid_Height, grid_CellSize, grid_Offset);
@@ -148,14 +139,14 @@ public class MazeHandler : MonoBehaviour
                 topWall.transform.position = worldPos + new Vector3(0,topWall.transform.localScale.y / 2,grid_CellSize.y / 2);
                 topWall.transform.localScale = new Vector3(grid_CellSize.x, topWall.transform.localScale.y, topWall.transform.localScale.z);
                 walls.Add(topWall);
-                
+
                 //Left wall
                 GameObject leftWall = Instantiate(wallPrefab, transform);
                 leftWall.transform.position = worldPos + new Vector3(-grid_CellSize.x / 2,leftWall.transform.localScale.y / 2,0);
                 leftWall.transform.localScale = new Vector3(grid_CellSize.y, leftWall.transform.localScale.y, leftWall.transform.localScale.z);
                 leftWall.transform.eulerAngles = new Vector3(0, 90, 0);
                 walls.Add(leftWall);
-                
+
                 if(y == 0)
                 {
                     //Bottom wall

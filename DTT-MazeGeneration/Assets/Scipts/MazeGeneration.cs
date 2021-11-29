@@ -48,20 +48,6 @@ public class MazeGeneration
 
     public void SetWallIndexesToCells()
     {
-        //if(x == 0): cellIndex * 2 + X == UpWallIndex
-        //else if(x == width - 1): cellIndex * 2 + X + Y + 1 == UpWallIndex
-        //else: cellIndex * 2 + X + 1 == UpWallIndex
-
-        //UpWallIndex + 1 == LeftWallIndex
-
-        //if(y == 1 && x == gridWidth - 1): UpWallIndex - 4 == DownWallIndex
-        //else if(y == 1 || x == gridWidth - 1):UpWallIndex - 3 == DownWallIndex
-        //else if(x == 0): UpWllIndex + 2 == DownWallIndex
-        //else: UpWallIndex - 2 == DownWallIndex
-
-        //if(x == gridWidth - 1): UpWallIndex + 2 == RightWallIndex
-        //else: UpWallIndex + (width * 2) + 2 == RightWallIndex
-
         for (int x = 0; x < gridSystem.GetWidth(); x++)
         {
             for (int y = 0; y < gridSystem.GetHeight(); y++)
@@ -165,14 +151,14 @@ public class MazeGeneration
     public void RemoveWallBetweenCells(Cell a, Cell b)
     {
         //debug wallIndexes if not correct
-        // foreach (int wallA in a.wallsIndex)
-        // {
-        //     Debug.Log($"{a.x},{a.y} = {wallA}");    
-        // }
-        // foreach (int wallB in b.wallsIndex)
-        // {
-        //     Debug.Log($"{b.x},{b.y} = {wallB}");
-        // }
+        foreach (int wallA in a.wallsIndex)
+        {
+            Debug.Log($"{a.x},{a.y} = {wallA}");    
+        }
+        foreach (int wallB in b.wallsIndex)
+        {
+            Debug.Log($"{b.x},{b.y} = {wallB}");
+        }
 
         //break wall between 2 cells given
         foreach (int wallA in a.wallsIndex)
