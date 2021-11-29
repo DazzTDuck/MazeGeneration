@@ -94,7 +94,7 @@ public class MazeHandler : MonoBehaviour
             if (grid_Width > grid_Height)
             {
                 x = (float)width / grid_Width;
-                bool check = grid_Width / 2 - grid_Height <= 10 && grid_Width / 2 - grid_Height > 0;
+                bool check = grid_Width / 2 - grid_Height <= 10 && grid_Width / 2 - grid_Height >= 0;
                 y = grid_Width / grid_Height * x * (check ? 0.5f : 1f);
             }
             else
@@ -107,7 +107,7 @@ public class MazeHandler : MonoBehaviour
 
         //centering grid
         grid_Offset.x = (-width + x) * 0.5f + 0.5f + transform.position.x;
-        grid_Offset.y = (-height + y) * 0.5f + 0.5f;
+        grid_Offset.y = (-height + y) * (0.5f - (float)Mathf.Abs(grid_Width - grid_Height) / 100);
 
         grid_CellSize = new Vector2(x, y);
         mazeGridSystem = new GridSystem(grid_Width, grid_Height, grid_CellSize, grid_Offset);
