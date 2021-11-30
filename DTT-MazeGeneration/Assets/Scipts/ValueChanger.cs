@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -8,16 +9,17 @@ using UnityEngine.PlayerLoop;
 
 public class ValueChanger : MonoBehaviour
 {
-    [SerializeField] private int minValue = 10;
-    [SerializeField] private int maxValue = 250;
+    [SerializeField] private float minValue = 10;
+    [SerializeField] private float maxValue = 250;
+    [SerializeField] private float changeAmount = 1;
+    [SerializeField] private bool showDecimals = false;
     [Space]
     [SerializeField] private TMP_Text valueText;
     [SerializeField] private Button plusButton;
     [SerializeField] private Button minusButton;
     
-    private int changeAmount = 1;
 
-    public int CurrentValue { get; private set; }
+    public float CurrentValue { get; private set; }
 
     private void Start()
     {
@@ -29,26 +31,30 @@ public class ValueChanger : MonoBehaviour
 
     private void UpdateText()
     {
-        valueText.text = CurrentValue < 10 ? $"0{CurrentValue}" : CurrentValue.ToString();
+        valueText.text = showDecimals ? CurrentValue.ToString("0.0") : CurrentValue.ToString();
     }
 
-    private void AddValue(int i)
+    private void AddValue(float i)
     {
+        CurrentValue = (float)Math.Round(CurrentValue, 1);
+        
         if(CurrentValue + i <= maxValue)
             CurrentValue+= i;
 
         UpdateText();
     }
 
-    private void SubtractValue(int i)
+    private void SubtractValue(float i)
     {
+        CurrentValue = (float)Math.Round(CurrentValue, 1);
+        
         if(CurrentValue - i >= minValue)
             CurrentValue-= i;
 
         UpdateText();
     }
     
-    public void SetChangeAmount(int newAmount)
+    public void SetChangeAmount(float newAmount)
     {
         changeAmount = newAmount;
     }
