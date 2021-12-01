@@ -17,9 +17,9 @@ public class MazeHandler : MonoBehaviour
 
     private const int width = 180;
     private const int height = 180;
-    //[HideInInspector]
+    [HideInInspector]
     public Vector2 grid_CellSize = new Vector2(1, 1);
-    [SerializeField] private Vector2 grid_Offset;
+    private Vector2 grid_Offset;
 
     private GridSystem mazeGridSystem;
     public MazeGeneration mazeGeneration;
