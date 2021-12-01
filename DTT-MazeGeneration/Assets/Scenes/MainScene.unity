@@ -628,7 +628,6 @@ MonoBehaviour:
   wallPrefab: {fileID: 5078439028444394562, guid: 55c4c4bf4fd26924bb71f752477f9544, type: 3}
   searchingCube: {fileID: 2108575715}
   grid_CellSize: {x: 1, y: 1}
-  grid_Offset: {x: 0, y: 0}
 --- !u!4 &397189448
 Transform:
   m_ObjectHideFlags: 0
@@ -4993,7 +4992,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 49.55
+  m_fontSize: 49.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6119,7 +6118,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 43.9
+  m_fontSize: 43.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
