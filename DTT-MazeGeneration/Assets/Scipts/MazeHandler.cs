@@ -110,14 +110,19 @@ public class MazeHandler : MonoBehaviour
         if(!wallsBuilt)
             BuildAllWalls();
         else
-        {
-            //show all walls again
-            foreach (GameObject wall in walls)
-            {
-                if(!wall.activeSelf)
-                    wall.SetActive(true);            
-            }    
+        {   
+            ShowAllWalls();
         }
+    }
+    
+    public void ShowAllWalls()
+    {
+        //show all walls again
+        foreach (GameObject wall in walls)
+        {
+            if(!wall.activeSelf)
+                wall.SetActive(true);            
+        }    
     }
     
     public void BuildAllWalls()
@@ -126,7 +131,6 @@ public class MazeHandler : MonoBehaviour
         {
             for (int y = 0; y < grid_Height; y++)
             {
-                Cell cell = mazeGridSystem.GetGridObjectValue(x, y);
                 Vector3 worldPos = mazeGridSystem.GetWorldPosition(x,  y);
                 
                 //Top wall
@@ -198,5 +202,26 @@ public class MazeHandler : MonoBehaviour
             if(searchingCube.activeSelf != showSearchingCube)
                 searchingCube.SetActive(showSearchingCube);        
         }
+    }
+    
+    public void StopGeneration()
+    { 
+        mazeGeneration.generatingMaze = false;
+        mazeGeneration.ResetMaze();
+        ShowAllWalls();
+    }
+    
+    public void SetMazeSize(int newWidth, int newHeight)
+    {
+        grid_Width = newWidth;
+        grid_Height = newHeight;
+    }
+    public void SetLatency(float newLatency)
+    {
+        generatingLatency = newLatency;
+    }
+    public void ShowGenerationBetter(bool showGeneration)
+    {
+        showSearchingCube = showGeneration;       
     }
 }

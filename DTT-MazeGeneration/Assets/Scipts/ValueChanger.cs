@@ -5,6 +5,7 @@ using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
 using UnityEngine.PlayerLoop;
 
 public class ValueChanger : MonoBehaviour
@@ -12,7 +13,9 @@ public class ValueChanger : MonoBehaviour
     [SerializeField] private float minValue = 10;
     [SerializeField] private float maxValue = 250;
     [SerializeField] private float changeAmount = 1;
+    [Space]
     [SerializeField] private bool showDecimals = false;
+    [SerializeField] private int amountDecimals = 2;
     [Space]
     [SerializeField] private TMP_Text valueText;
     [SerializeField] private Button plusButton;
@@ -21,7 +24,7 @@ public class ValueChanger : MonoBehaviour
 
     public float CurrentValue { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
         CurrentValue = minValue;
 
@@ -31,12 +34,12 @@ public class ValueChanger : MonoBehaviour
 
     private void UpdateText()
     {
-        valueText.text = showDecimals ? CurrentValue.ToString("0.0") : CurrentValue.ToString();
+        valueText.text = showDecimals ? CurrentValue.ToString("0.00") : CurrentValue.ToString();
     }
 
     private void AddValue(float i)
     {
-        CurrentValue = (float)Math.Round(CurrentValue, 1);
+        CurrentValue = (float)Math.Round(CurrentValue, amountDecimals);
         
         if(CurrentValue + i <= maxValue)
             CurrentValue+= i;
@@ -46,7 +49,7 @@ public class ValueChanger : MonoBehaviour
 
     private void SubtractValue(float i)
     {
-        CurrentValue = (float)Math.Round(CurrentValue, 1);
+        CurrentValue = (float)Math.Round(CurrentValue, amountDecimals);
         
         if(CurrentValue - i >= minValue)
             CurrentValue-= i;
@@ -57,5 +60,11 @@ public class ValueChanger : MonoBehaviour
     public void SetChangeAmount(float newAmount)
     {
         changeAmount = newAmount;
+    }
+    
+    public void SetButtonListeners(UnityAction newAction)
+    {
+        plusButton.onClick.AddListener(newAction);
+        minusButton.onClick.AddListener(newAction);        
     }
 }

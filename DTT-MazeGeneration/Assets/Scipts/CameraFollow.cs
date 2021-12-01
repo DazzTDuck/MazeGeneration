@@ -6,9 +6,10 @@ using UnityEngine.PlayerLoop;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] MazeHandler mazeHandler;
-    [SerializeField] Transform target;
-    [SerializeField] float followSpeed;
+    [SerializeField] private MazeHandler mazeHandler;
+    [SerializeField] private Transform target;
+    [SerializeField] private float followSpeed;
+    public bool zoomCamera = false;
 
     private Vector3 startPosistion;
     private Vector3 newPosistion;
@@ -23,9 +24,9 @@ public class CameraFollow : MonoBehaviour
         if(mazeHandler.mazeGeneration.gridSystem == null)
             return;
         
-        if (mazeHandler.mazeGeneration.gridSystem.GetWidth() >= 75)
+        if (Mathf.Max(mazeHandler.mazeGeneration.gridSystem.GetWidth(), mazeHandler.mazeGeneration.gridSystem.GetHeight()) >= 75)
         {
-            if (mazeHandler.mazeGeneration.generatingMaze && target.gameObject.activeSelf)
+            if (mazeHandler.mazeGeneration.generatingMaze && target.gameObject.activeSelf && zoomCamera)
             {
                 newPosistion = new Vector3(target.position.x + 15, startPosistion.y * 0.35f, target.position.z);
                 transform.position = Vector3.Lerp(transform.position, newPosistion, followSpeed * Time.deltaTime); 

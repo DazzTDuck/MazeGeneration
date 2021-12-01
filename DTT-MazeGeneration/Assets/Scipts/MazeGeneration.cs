@@ -112,13 +112,6 @@ public class MazeGeneration
     {
         Debug.Log("generating");
 
-        //for debugging wall indexes to see why they're not correct
-        // Cell cellA = gridSystem.GetGridObjectValue(19, 7);
-        // Cell cellB = gridSystem.GetGridObjectValue(18, 7);
-        //
-        // RemoveWallBetweenCells(cellA, cellB);
-        // return;
-        
         foreach (Cell cell in stack)
         {
             cell.isCurrentCell = cell == stack.First();
@@ -151,14 +144,14 @@ public class MazeGeneration
     public void RemoveWallBetweenCells(Cell a, Cell b)
     {
         //debug wallIndexes if not correct
-        foreach (int wallA in a.wallsIndex)
-        {
-            Debug.Log($"{a.x},{a.y} = {wallA}");    
-        }
-        foreach (int wallB in b.wallsIndex)
-        {
-            Debug.Log($"{b.x},{b.y} = {wallB}");
-        }
+        // foreach (int wallA in a.wallsIndex)
+        // {
+        //     Debug.Log($"{a.x},{a.y} = {wallA}");    
+        // }
+        // foreach (int wallB in b.wallsIndex)
+        // {
+        //     Debug.Log($"{b.x},{b.y} = {wallB}");
+        // }
 
         //break wall between 2 cells given
         foreach (int wallA in a.wallsIndex)
@@ -267,6 +260,6 @@ public class MazeGeneration
      
     public Vector3 GetPositionCurrentCell()
     {
-        return gridSystem.GetWorldPosition(currentCell.x, currentCell.y); 
+        return gridSystem.GetWorldPosition(currentCell.x, currentCell.y);
     }
 }
