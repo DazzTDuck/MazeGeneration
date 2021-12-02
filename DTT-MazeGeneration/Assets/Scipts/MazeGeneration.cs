@@ -251,6 +251,7 @@ public class MazeGeneration
             }
         }
         cells.Clear();
+        stack.Clear();
     }
     
      public bool IsCompleted()
