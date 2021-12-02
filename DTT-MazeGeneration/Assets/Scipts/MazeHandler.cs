@@ -210,7 +210,7 @@ public class MazeHandler : MonoBehaviour
     { 
         mazeGeneration.generatingMaze = false;
         mazeGeneration.ResetMaze();
-        ShowAllWalls();
+        DestroyAllWalls();
     }
     
     public void SetMazeSize(int newWidth, int newHeight)
