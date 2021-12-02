@@ -103,7 +103,6 @@ public class MazeHandler : MonoBehaviour
         
         if(Math.Abs(wallsWidth - grid_Width) > 0 || Math.Abs(wallsHeight - grid_Height) > 0)
         {
-            wallsBuilt = false;
             wallsWidth = grid_Width;
             wallsHeight = grid_Height;
             DestroyAllWalls();
@@ -184,6 +183,7 @@ public class MazeHandler : MonoBehaviour
             Destroy(wall);    
         }
         walls.Clear();
+        wallsBuilt = false;
     }
     
     private void ShowSearchingCube()
