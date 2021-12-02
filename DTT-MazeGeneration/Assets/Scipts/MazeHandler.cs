@@ -78,19 +78,19 @@ public class MazeHandler : MonoBehaviour
         float x = (float)WIDTH / grid_Width;
         float y = (float)HEIGHT / grid_Height;
         
-        int changedWidth = WIDTH;
-        int changedHeight = HEIGHT;
+        float changedWidth = WIDTH;
+        float changedHeight = HEIGHT;
 
         //scaling cells properly and changing width or height to center better
         if (grid_Width > grid_Height)
         { 
             y = x;
-            changedHeight /= 2;
+            changedHeight /= (float)grid_Width / grid_Height;
         }
         else if(grid_Width < grid_Height)
         {
             x = y;
-            changedWidth /= 2;
+            changedWidth /= (float)grid_Height / grid_Width;
         }
             
         //centering grid
