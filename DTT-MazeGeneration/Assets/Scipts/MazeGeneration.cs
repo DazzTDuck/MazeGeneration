@@ -46,6 +46,9 @@ public class MazeGeneration
         GenerateMaze();
     }
 
+    /// <summary>
+    ///  Tells all the cells what the index is for their corresponding walls on each side
+    /// </summary>
     public void SetWallIndexesToCells()
     {
         for (int x = 0; x < gridSystem.GetWidth(); x++)
@@ -61,8 +64,6 @@ public class MazeGeneration
                 int currentCellIndex = cells.IndexOf(cell);
 
                 //calculate up index
-                // if(x == 0)
-                //     upWallIndex = currentCellIndex * 2 + x;
                 if(y == 0)
                     upWallIndex = currentCellIndex * 2 + x;
                 else if(x == gridSystem.GetWidth() - 1)
@@ -141,18 +142,13 @@ public class MazeGeneration
         }
     }
 
+    /// <summary>
+    ///  Removes the wall between 2 cells
+    /// </summary>
+    /// <param name="a">First Cell</param>
+    /// <param name="b">Second Cell</param>
     public void RemoveWallBetweenCells(Cell a, Cell b)
     {
-        //debug wallIndexes if not correct
-        // foreach (int wallA in a.wallsIndex)
-        // {
-        //     Debug.Log($"{a.x},{a.y} = {wallA}");    
-        // }
-        // foreach (int wallB in b.wallsIndex)
-        // {
-        //     Debug.Log($"{b.x},{b.y} = {wallB}");
-        // }
-
         //break wall between 2 cells given
         foreach (int wallA in a.wallsIndex)
         {
@@ -160,9 +156,7 @@ public class MazeGeneration
             {
                 if(wallA == wallB)
                 {
-                    //Debug.Log($"Removed Wall: {wallA}");
                     walls[wallA].SetActive(false);
-                    //just disabling wallA because they're the same wall
                     return;
                 }
             }
@@ -170,6 +164,9 @@ public class MazeGeneration
         Debug.LogWarning($"cell {a.x},{a.y} and cell {b.x},{b.y} does not have a shared wall");
     }
     
+    /// <summary>
+    /// This randomized the start position for the maze and makes an exit on the other side of the start point
+    /// </summary>
     public void MakeStartAndEndPoint()
     {
         Cell endCell;
@@ -211,6 +208,11 @@ public class MazeGeneration
         //3 = Right
     }
     
+    /// <summary>
+    /// Returns a random cell that is next to the given cell
+    /// </summary>
+    /// <param name="cell">Cell to get a random neighbor from</param>
+    /// <returns></returns>
     public Cell GetRandomNeighbor(Cell cell)
     {
         List<Cell> neighbors = new List<Cell>();
