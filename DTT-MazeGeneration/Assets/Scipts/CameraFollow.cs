@@ -19,6 +19,7 @@ public class CameraFollow : MonoBehaviour
         startPosistion = transform.position;
     }
 
+    //follows the point where the maze is generating from
     private void Update()
     {
         if(mazeHandler.mazeGeneration.gridSystem == null)
@@ -28,6 +29,7 @@ public class CameraFollow : MonoBehaviour
         {
             if (mazeHandler.mazeGeneration.generatingMaze && target.gameObject.activeSelf && zoomCamera)
             {
+                //lerp with some changed values so the lerping is smoothed and zoomed in
                 newPosistion = new Vector3(target.position.x + 15, startPosistion.y * 0.35f, target.position.z);
                 transform.position = Vector3.Lerp(transform.position, newPosistion, followSpeed * Time.deltaTime); 
             }

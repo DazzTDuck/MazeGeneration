@@ -10,6 +10,13 @@ public class GridSystem
 
     private Cell[,] gridArray;
 
+    /// <summary>
+    /// Generates the grid where the maze will be generated
+    /// </summary>
+    /// <param name="width">Grid width</param>
+    /// <param name="height">Grid height</param>
+    /// <param name="cellSize">Grid cell size</param>
+    /// <param name="offset">Used to get the world position</param>
     public GridSystem(int width, int height, Vector2 cellSize, Vector2 offset)
     {
         this.width = width;
@@ -27,24 +34,41 @@ public class GridSystem
             }
         }
     }
+    /// <summary>
+    /// Gets world position with the given cell coordinates 
+    /// </summary>
+    /// <param name="x">X coordinates of cell</param>
+    /// <param name="y">Y coordinates of cell</param>
+    /// <returns></returns>
     public Vector3 GetWorldPosition(int x, int y)
     {
         return new Vector3(x * cellSize.x + offset.x, 0, y * cellSize.y + offset.y);
     }
     
+    /// <summary>
+    /// Returns X & Y coordinates of cell in given world position 
+    /// </summary>
+    /// <param name="worldPosition">World position of cell you want to get the X & Y coordinates for</param>
+    /// <param name="x">returns the X coordinate</param>
+    /// <param name="y">returns the Y coordinate</param>
     public void GetGridPositionXY(Vector3 worldPosition, out int x, out int y)
     {
-        //sets world position to grid position
         x = Mathf.FloorToInt((worldPosition.x - offset.x) / cellSize.x);
         y = Mathf.FloorToInt((worldPosition.z  - offset.y) / cellSize.y);
     }
 
+    /// <summary>
+    /// Returns the cell and it's values that is at the given coordinates
+    /// </summary>
+    /// <param name="x">X coordinates of cell</param>
+    /// <param name="y">Y coordinates of cell</param>
+    /// <returns></returns>
     public Cell GetGridObjectValue(int x, int y)
     {
         if (x >= 0 && y >= 0 && x < width && y < height)
             return gridArray[x, y];
-        else
-            return default(Cell);
+
+        return default(Cell);
     }
 
     public int GetWidth()

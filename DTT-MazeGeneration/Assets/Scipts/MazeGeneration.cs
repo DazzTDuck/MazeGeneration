@@ -97,6 +97,9 @@ public class MazeGeneration
         }
     }
 
+    /// <summary>
+    /// Adds all the cells of the grid in a list
+    /// </summary>
     private void SetAllCellsInList()
     {
         for (int x = 0; x < gridSystem.GetWidth(); x++)
@@ -108,7 +111,10 @@ public class MazeGeneration
             }    
         }
     }
-    
+
+    /// <summary>
+    /// The A* algorithm that generates the maze
+    /// </summary>
     public void GenerateMaze()
     {
         Debug.Log("generating");
@@ -242,6 +248,9 @@ public class MazeGeneration
         return null;
     } 
 
+    /// <summary>
+    /// Resets entire maze so it can be regenerated again
+    /// </summary>
     public void ResetMaze()
     {
         for (int x = 0; x < gridSystem.GetWidth(); x++)
@@ -256,11 +265,19 @@ public class MazeGeneration
         stack.Clear();
     }
     
+    /// <summary>
+    /// Returns if the maze has been fully generated
+    /// </summary>
+    /// <returns></returns>
      public bool IsCompleted()
     {
         return stack.Count == 0;
     }
-     
+    
+    /// <summary>
+    /// Returns world position of the current cell
+    /// </summary>
+    /// <returns></returns>
     public Vector3 GetPositionCurrentCell()
     {
         return gridSystem.GetWorldPosition(currentCell.x, currentCell.y);

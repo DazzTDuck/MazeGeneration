@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Cell data
+/// </summary>
 public class Cell
 {
     public int[] wallsIndex = {0, 1, 2, 3};
@@ -20,12 +23,21 @@ public class Cell
         ResetCell();
     }
 
+    /// <summary>
+    /// Sets the indexes of the wall for each cell
+    /// </summary>
+    /// <param name="up">Up wallIndex</param>
+    /// <param name="left">Left wallIndex</param>
+    /// <param name="down">Down wallIndex</param>
+    /// <param name="right">Right wallIndex</param>
     public void SetWallIndex(int up, int left, int down, int right)
     {
         wallsIndex = new []{up, left, down, right};
-        //Debug.Log($"{x}, {y} = {up}, {left}, {down}, {right}");
     }
 
+    /// <summary>
+    /// Resets the cell data to be used again
+    /// </summary>
     public void ResetCell()
     {
         isVisited = false;
