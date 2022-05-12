@@ -42,6 +42,9 @@ public class MazeHandler : MonoBehaviour
         ShowSearchingCube();
     }
     
+    /// <summary>
+    /// Generates a new maze
+    /// </summary>
     public void GenerateNewMaze()
     {
         if(!mazeGeneration.generatingMaze)
@@ -51,6 +54,9 @@ public class MazeHandler : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Handles the delay of the generation loop 
+    /// </summary>
     private void MazeGenerationDelay()
     {
         //delay the generation
@@ -71,6 +77,9 @@ public class MazeHandler : MonoBehaviour
         }    
     }
 
+    /// <summary>
+    /// Updates the grid and makes sure grid is sized properly and walls are placed at the correct position based on the size
+    /// </summary>
     public void UpdateGrid()
     {
         mazeGridSystem = null;

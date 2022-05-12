@@ -113,7 +113,7 @@ public class MazeGeneration
     }
 
     /// <summary>
-    /// The A* algorithm that generates the maze
+    /// The recursive backtracker algorithm that generates the maze
     /// </summary>
     public void GenerateMaze()
     {
